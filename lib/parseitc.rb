@@ -3,9 +3,11 @@ module ParseITC
   class TrasactionParser
     attr_accessor :transactions
     Version = '0.1'
-    def initialize(filename=nil)
+    # filenames can be either string or array
+    def initialize(filenames=[])
       @transactions = []
-      add_file filename if filename
+      filenames = [filenames].flatten
+      filenames.each{|f| add_file f} unless filenames.empty?
     end
 
     def add_file filename
