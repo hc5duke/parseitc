@@ -9,7 +9,9 @@ module ParseITC
     end
 
     def add_file filename
-      File.readlines(filename)[1..-1].each do |t|
+      lines = File.readlines(filename)
+      lines.shift if lines.first.match(/^Provider/)
+      lines.each do |t|
         add_transaction t
       end
     end
