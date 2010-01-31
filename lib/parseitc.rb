@@ -31,6 +31,8 @@ module ParseITC
       def numbers_by(match)
         # puts match.captures.first == "country"
         field = match.captures.first
+        allowed_fields = @transactions.first.instance_variables
+        raise NoMethodError.new("#{match}") unless allowed_fields.map{|f| f[1..-1]}.include? field
         values = {}
         @transactions.map do |t|
           value = t.send(field.to_sym)
