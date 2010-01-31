@@ -9,6 +9,8 @@ begin
   by_country.sort.each {|k, v| puts "#{k}: #{v}"}
   by_date = report.numbers_by_date
   by_date.sort.each {|k, v| puts "#{k}: #{v}"}
+  by_royalty_currency = report.numbers_by_price_tier
+  by_royalty_currency.sort.each {|k, v| puts "#{k}: #{v}"}
 rescue Errno::ENOENT 
   puts "The data file you specified was not found"
 rescue Errno::EACCES 
