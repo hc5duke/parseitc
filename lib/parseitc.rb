@@ -62,12 +62,17 @@ module ParseITC
                   :vendor_identifier, # id you give the product
                   :date,              # just take the begin date
                   :units,
-                  :price,
+                  :royalty_price,     # this is what you get paid
                   :royalty_currency,
                   :customer_price,
                   :customer_currency,
+                  :vendor_offer_code,
+                  :promo_code,
                   :country,
                   :apple_identifier   # itunes link id
+
+    alias :price :royalty_price
+
     def initialize array
       @provider           = array[0]
       @provider_country   = array[1]
@@ -76,10 +81,12 @@ module ParseITC
       @vendor_identifier  = array[2]
       @date               = Date.parse(array[11])
       @units              = array[9]
-      @price              = array[10]
+      @royalty_price      = array[10]
       @royalty_currency   = array[15]
       @customer_price     = array[20]
       @customer_currency  = array[13]
+      @vendor_offer_code  = array[23]
+      @promo_code         = array[25]
       @country            = array[14]
       @apple_identifier   = array[19]
 
@@ -89,7 +96,7 @@ module ParseITC
 
     def price_tier
       prices = ApplePricing[@royalty_currency.downcase.to_sym]
-      prices.find_index(@price.to_f)
+      prices.find_index(@royalty_price.to_f)
     end
   end
 
