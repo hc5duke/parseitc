@@ -43,14 +43,16 @@ module ParseITC
   end
 
   class Transaction
+    YEAR_TWO_THOUSAND = Date.parse("1/1/2000")
+    TWO_THOUSAND_YEARS = YEAR_TWO_THOUSAND - Date.parse("1/1/0")
+
     # ignoring some columns that are ignored by iphone apps
     attr_accessor :provider,          # Apple (always)
                   :provider_country,  # US (always?)
                   :company,           # company x
                   :product,           # widgets and sprockets
                   :vendor_identifier, # id you give the product
-                  :begin_date,
-                  :end_date, 
+                  :date,              # just take the begin date
                   :units,
                   :price,
                   :royalty_currency,
@@ -64,8 +66,7 @@ module ParseITC
       @company            = array[5]
       @product            = array[6]
       @vendor_identifier  = array[2]
-      @begin_date         = array[11]
-      @end_date           = array[12]
+      @date               = Date.parse(array[11])
       @units              = array[9]
       @price              = array[10]
       @royalty_currency   = array[15]
@@ -73,6 +74,14 @@ module ParseITC
       @customer_currency  = array[13]
       @country            = array[14]
       @apple_identifier   = array[19]
+
+      # Adjust date if necessary ("1/5/10" should not be 10 A.D.)
+      @date += TWO_THOUSAND_YEARS if @date < YEAR_TWO_THOUSAND
+    end
+
+    def price_tier
+      @customer_price
+      @price
     end
   end
 
