@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 module ParseITC
-  class TrasactionParser
+  class TransactionParser
     attr_accessor :transactions
     Version = '0.1'
     # filenames can be either string or array

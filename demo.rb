@@ -3,7 +3,7 @@ require 'lib/parseitc'
 include ParseITC
 
 begin
-  report = TrasactionParser.new('demo1.txt')
+  report = TransactionParser.new('demo1.txt')
   report.add_file('demo2.txt')
   by_country = report.numbers_by_country
   by_country.sort.each {|k, v| puts "#{k}: #{v}"}
