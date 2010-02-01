@@ -1,0 +1,33 @@
+h1. parseitc
+
+h2. DESCRIPTION:
+
+parseitc is a Ruby gem written to parse iPhone app transaction reports from iTunes Connect.
+
+h2. FEATURES/PROBLEMS:
+
+Parsing of standard Sales/Trend Report tsv files from https://itts.apple.com/
+Allows ruby applications as well as Bash Init scripts to use the same config.
+
+h2. SYNOPSIS:
+
+bc. require 'rubygems'
+require 'lib/parseitc'
+include ParseITC
+reports = ParseConfig.new('/path/to/tsv/file1')
+reports.add_file('/path/to/tsv/file2')
+by_country = report.numbers_by_country
+by_country.sort.each {|k, v| puts "#{k}: #{v}"}
+
+h2. REQUIREMENTS:
+
+* Ruby (Developed on 1.8.7)
+* RubyGems
+
+h2. INSTALL:
+
+bc. sudo gem install parseitc
+
+h2. TODO:
+
+* parse monthly and weekly reports
