@@ -1,3 +1,8 @@
 Sun 2010-01-31 - v0.1
 - Started project
 - Parse fields and count by them
+
+Tue 2010-02-02 - v0.1.1
+- Typos were fixed
+- price was renamed to less confusing royalty_price
+- filenames can be array or string
