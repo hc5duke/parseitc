@@ -6,3 +6,7 @@ Tue 2010-02-02 - v0.1.1
 - Typos were fixed
 - price was renamed to less confusing royalty_price
 - filenames can be array or string
+
+Tue 2010-02-02 - v0.1.2
+- getcaliper.com changes
+- todo: should really use TDD // rspec

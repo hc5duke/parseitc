@@ -2,48 +2,50 @@
 module ParseITC
   class TransactionParser
     attr_accessor :transactions
-    Version = '0.1'
-    # filenames can be either string or array
-    def initialize(filenames=[])
+    Version = '0.1.2'
+    # files can be either string or array
+    def initialize(files=[])
       @transactions = []
-      filenames = [filenames].flatten
-      filenames.each{|f| add_file f} unless filenames.empty?
+      [files].flatten.each do |file|
+        add_file file
+      end
     end
 
-    def add_file filename
-      lines = File.readlines(filename)
+    def add_file file
+      lines = File.readlines(file)
       lines.shift if lines.first.match(/^Provider/)
-      lines.each do |t|
-        add_transaction t
+      lines.each do |xion|
+        add_transaction xion
       end
     end
 
     def add_transaction transaction
-      values = transaction.split(/\t|\n/)
-      raise WrongNumberOfElementsException.new(27, values.length) unless values.length == 27
-      @transactions << Transaction.new(values)
+      @transactions << Transaction.new(transaction.split(/\t|\n/))
     end
 
     private
       def method_missing(method_id, *arguments)
-        if match = /numbers_by_([_a-zA-Z]\w*)/.match(method_id.to_s)
+        match = /numbers_by_([_a-zA-Z]\w*)/.match(method_id.to_s)
+        if match
           numbers_by(match)
         else
           super
         end
       end
 
+      def allowed_fields
+        first_xion = @transactions.first
+        first_xion.instance_variables.map{|field| field[1..-1]} +
+        first_xion.public_methods
+      end
+
       def numbers_by(match)
-        # puts match.captures.first == "country"
         field = match.captures.first
-        allowed_fields = @transactions.first.instance_variables.map{|f| f[1..-1]} +
-          @transactions.first.public_methods
         raise NoMethodError.new("#{match}") unless allowed_fields.include? field
         values = {}
-        @transactions.map do |t|
-          value = t.send(field.to_sym)
-          values[value] ||= 0
-          values[value] += t.units.to_i
+        @transactions.map do |xion|
+          value = xion.send(field.to_sym)
+          values[value] = (values[value] || 0) + xion.units.to_i
         end
         values
       end
@@ -74,6 +76,7 @@ module ParseITC
     alias :price :royalty_price
 
     def initialize array
+      raise WrongNumberOfElementsException.new(27, array.length) unless array.length == 27
       @provider           = array[0]
       @provider_country   = array[1]
       @company            = array[5]
