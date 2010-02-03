@@ -33,21 +33,19 @@ module ParseITC
         end
       end
 
-      def allowed_fields
-        first_xion = @transactions.first
-        first_xion.instance_variables.map{|field| field[1..-1]} +
-        first_xion.public_methods
-      end
-
-      def numbers_by(match)
-        field = match.captures.first
-        raise NoMethodError.new("#{match}") unless allowed_fields.include? field
+      def get_count_by_field field
         values = {}
-        @transactions.map do |xion|
+        @transactions.each do |xion|
           value = xion.send(field.to_sym)
           values[value] = (values[value] || 0) + xion.units.to_i
         end
         values
+      end
+
+      def numbers_by(match)
+        field = match.captures.first
+        raise NoMethodError.new("#{match}") unless @transactions.first.has_field? field
+        get_count_by_field field
       end
     # end private
   end
@@ -100,6 +98,10 @@ module ParseITC
     def price_tier
       prices = ApplePricing[@royalty_currency.downcase.to_sym]
       prices.find_index(@royalty_price.to_f)
+    end
+
+    def has_field? field
+      (instance_variables.map{|variable| variable[1..-1]} + public_methods).include? field
     end
   end
 
