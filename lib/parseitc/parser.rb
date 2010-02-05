@@ -30,12 +30,39 @@ module ParseITC
 
     private
       def method_missing(method_id, *arguments)
-        match = /numbers_by_([_a-zA-Z]\w*)/.match(method_id.to_s)
+        match = /split_by_([_a-zA-Z]\w*)/.match(method_id.to_s)
         if match
-          numbers_by(match)
+          split_by(match)
         else
-          super
+          match = /count_by_([_a-zA-Z]\w*)|numbers_by_([_a-zA-Z]\w*)/.match(method_id.to_s)
+          if match
+            count_by(match)
+          else
+            super
+          end
         end
+      end
+
+      def split_by(match)
+        field = match.captures.first
+        raise NoMethodError.new("#{match}") unless @transactions.first.has_field? field
+        split_by_field field
+      end
+
+      def split_by_field field
+        values = {}
+        @transactions.each do |xion|
+          value = xion.send(field.to_sym)
+          values[value] ||= Parser.new
+          values[value].transactions << xion
+        end
+        values
+      end
+
+      def count_by(match)
+        field = match.captures.first
+        raise NoMethodError.new("#{match}") unless @transactions.first.has_field? field
+        get_count_by_field field
       end
 
       def get_count_by_field field
@@ -47,11 +74,6 @@ module ParseITC
         values
       end
 
-      def numbers_by(match)
-        field = match.captures.first
-        raise NoMethodError.new("#{match}") unless @transactions.first.has_field? field
-        get_count_by_field field
-      end
     # end private
   end
 
