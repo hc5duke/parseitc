@@ -74,7 +74,7 @@ module ParseITC
     alias :price :royalty_price
 
     def initialize array
-      raise WrongNumberOfElementsException.new(27, array.length) unless array.length == 27
+      raise WrongNumberOfElements.new(27, array.length) unless array.length == 27
       @provider           = array[0]
       @provider_country   = array[1]
       @company            = array[5]
@@ -105,7 +105,7 @@ module ParseITC
     end
   end
 
-  class WrongNumberOfElementsException < Exception
+  class WrongNumberOfElements < Exception
     def initialize(expected, actual)
       super "Invalid number of elements (#{actual}). Expected #{expected} values"
     end
