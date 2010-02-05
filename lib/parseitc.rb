@@ -6,6 +6,10 @@ module ParseITC
     # files can be either string or array
     def initialize(files=[])
       @transactions = []
+      add_files files
+    end
+
+    def add_files files
       [files].flatten.each do |file|
         add_file file
       end
