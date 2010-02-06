@@ -3,7 +3,7 @@ require 'parseitc/transaction'
 module ParseITC
   class Parser
     attr_accessor :transactions
-    Version = '0.1.3'
+    Version = '0.1.4'
     # files can be either string or array
     def initialize(files=[])
       @transactions = []
