@@ -1,7 +1,6 @@
 #!/usr/bin/env ruby
 
-require 'lib/parseitc/transaction'
-require 'lib/parseitc/parser'
+require 'parseitc/parser'
 
 module ParseITC
   # pricing tier info

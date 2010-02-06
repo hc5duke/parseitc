@@ -1,4 +1,4 @@
-require 'lib/parseitc/transaction'
+require 'parseitc/transaction'
 
 module ParseITC
   class Parser
