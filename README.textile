@@ -14,10 +14,12 @@ h2. SYNOPSIS:
 bc. require 'rubygems'
 require 'lib/parseitc'
 include ParseITC
-reports = TransactionParser.new('/path/to/tsv/file1')
-reports.add_file('/path/to/tsv/file2')
-by_country = report.numbers_by_country
-by_country.sort.each {|k, v| puts "#{k}: #{v}"}
+
+report = Parser.new('/path/to/tsv/file1')
+report.add_file('/path/to/tsv/file2')
+report.count_by_price_tier.sort.each do |k, v|
+  puts "#{k}: #{v}"
+end
 
 h2. REQUIREMENTS:
 

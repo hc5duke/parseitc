@@ -42,11 +42,16 @@ module ParseITC
 
       # Adjust date if necessary ("1/5/10" should not be 10 A.D.)
       @date += TWO_THOUSAND_YEARS if @date < YEAR_TWO_THOUSAND
+      raise PriceTierNotFound.new(royalty_price, royalty_currency) unless price_tier
     end
 
     def price_tier
-      prices = ApplePricing[@royalty_currency.downcase.to_sym]
-      prices.find_index(@royalty_price.to_f)
+      @price_tier ||= begin
+        prices = ApplePricing[@royalty_currency.downcase.to_sym]
+        prices.find_index(@royalty_price.to_f)
+      rescue
+        nil
+      end
     end
 
     def has_field? field
@@ -60,4 +65,9 @@ module ParseITC
     end
   end
 
+  class PriceTierNotFound < Exception
+    def initialize(amount, currency)
+      super "No price tier found for #{amount} #{currency}"
+    end
+  end
 end

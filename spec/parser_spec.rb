@@ -2,8 +2,7 @@ require 'spec_helper'
 
 describe Parser do
   before(:each) do
-    @good_files = [FIXTURES_DIR + '/uploads/demo1.txt',
-      FIXTURES_DIR + '/uploads/demo2.txt']
+    @good_files = [FIXTURES_DIR + '/uploads/demo1.txt', FIXTURES_DIR + '/uploads/demo2.txt']
     @bad_file = FIXTURES_DIR + '/uploads/bad_demo1.txt'
     @no_file = '!'
 

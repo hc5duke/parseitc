@@ -1,7 +1,7 @@
 Gem::Specification.new do |s|
   s.name = %q{parseitc}
   s.version = "0.1.3"
-  s.date = %q{2010-02-04}
+  s.date = %q{2010-02-05}
   s.authors = ["HJ Choi"]
   s.email = %q{hc5duke@gmail.com}
   s.summary = %q{Parse iTunes Connect transaction reports}
