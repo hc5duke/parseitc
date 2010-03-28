@@ -20,7 +20,7 @@ module ParseITC
                   :country,
                   :apple_identifier   # itunes link id
 
-    alias :price :royalty_price
+    alias :price :customer_price
 
     def initialize array
       raise WrongNumberOfElements.new(27, array.length) unless array.length == 27
@@ -30,6 +30,7 @@ module ParseITC
       @product            = array[6]
       @vendor_identifier  = array[2]
       @date               = Date.parse(array[11])
+      @product_type_id    = array[8] # 1 = new, 7 = update
       @units              = array[9]
       @royalty_price      = array[10]
       @royalty_currency   = array[15]
@@ -48,7 +49,11 @@ module ParseITC
     def price_tier
       @price_tier ||= begin
         prices = ApplePricing[@royalty_currency.downcase.to_sym]
-        prices.find_index(@royalty_price.to_f)
+        if @customer_price.to_f == 0
+          0
+        else
+          prices.find_index(@royalty_price.to_f)
+        end
       rescue
         nil
       end
